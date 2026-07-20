@@ -249,8 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cartItemsTableBody.innerHTML = `
             <tr>
                 <td><strong>${cartState.name}</strong></td>
-                <td>Rp${cartState.basePrice.toLocaleString('id-ID')}</td>
-                <td><button class="delete-btn" data-action="clear-cart" aria-label="Hapus paket dari keranjang">Hapus</button></td>
+                <td>$${cartState.basePrice.toLocaleString('en-US')}</td>
+                <td><button class="delete-btn" data-action="clear-cart" aria-label="Remove package from cart">Remove</button></td>
             </tr>
         `;
 
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        cartTotalValDisplay.innerText = `Rp${totalAccumulator.toLocaleString('id-ID')}`;
+        cartTotalValDisplay.innerText = `$${totalAccumulator.toLocaleString('en-US')}`;
     };
 
     const clearCart = () => {
@@ -318,17 +318,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         pagesValLabel.innerText = inputPagesCount;
 
-        const additionalPagesCost = inputPagesCount > 1 ? (inputPagesCount - 1) * 30000 : 0;
+        const additionalPagesCost = inputPagesCount > 1 ? (inputPagesCount - 1) * 5 : 0;
         const domainCost = calcDomainCB.checked ? parseInt(calcDomainCB.value, 10) : 0;
 
         const calculatedFinalSum = baseTypeCost + additionalPagesCost + domainCost;
-        calcTotalResultDisplay.innerText = `Rp${calculatedFinalSum.toLocaleString('id-ID')}`;
+        calcTotalResultDisplay.innerText = `$${calculatedFinalSum.toLocaleString('en-US')}`;
     };
 
     if (calcTypeSelect && calcPagesRange) {
         calcTypeSelect.addEventListener('change', recalculateCalculatorEstimate);
         calcPagesRange.addEventListener('input', recalculateCalculatorEstimate);
         calcDomainCB.addEventListener('change', recalculateCalculatorEstimate);
+        
+        // Memastikan update saat halaman di load
+        recalculateCalculatorEstimate();
     }
 
     /* ==========================================================================
@@ -339,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (whatsappCheckoutBtn) {
         whatsappCheckoutBtn.addEventListener('click', () => {
             if (!cartState) {
-                alert('Keranjang belanja Anda kosong!');
+                alert('Your shopping cart is empty!');
                 return;
             }
 
@@ -348,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const clientDescInput = document.getElementById('checkout-desc').value.trim();
 
             if (!clientNameInput || !clientBusinessInput || !clientDescInput) {
-                alert('Mohon lengkapi semua baris detail informasi pemesanan terlebih dahulu.');
+                alert('Please fill in all order detail fields first.');
                 return;
             }
 
@@ -358,19 +361,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     selectedAddonsList.push(cb.getAttribute('data-name'));
                 }
             });
-            const addonsTextRepresentation = selectedAddonsList.length > 0 ? selectedAddonsList.join(', ') : 'Tidak ada tambahan';
+            const addonsTextRepresentation = selectedAddonsList.length > 0 ? selectedAddonsList.join(', ') : 'No add-ons';
             const grandTotalText = document.getElementById('cart-total-val').innerText;
 
             const waTargetNumber = "62895614003884"; 
-            const baseTextPrompt = `Halo, saya ingin memesan website dari Ran Studio.
+            const baseTextPrompt = `Hello, I would like to order a website from Ran Studio.
 
-Paket: ${cartState.name}
-Tambahan: ${addonsTextRepresentation}
+Package: ${cartState.name}
+Add-ons: ${addonsTextRepresentation}
 Total: ${grandTotalText}
 
-Nama: ${clientNameInput}
-Nama Usaha: ${clientBusinessInput}
-Deskripsi Website: ${clientDescInput}`;
+Name: ${clientNameInput}
+Business Name: ${clientBusinessInput}
+Website Description: ${clientDescInput}`;
 
             const processedEncodedUriString = encodeURIComponent(baseTextPrompt);
             const destinationEndpointUrl = `https://wa.me/${waTargetNumber}?text=${processedEncodedUriString}`;
@@ -419,12 +422,12 @@ Deskripsi Website: ${clientDescInput}`;
             const contactMessage = document.getElementById('form-message').value.trim();
 
             if (!contactName || !contactEmail || !contactMessage) {
-                alert('Mohon lengkapi Nama, Email, dan Pesan terlebih dahulu.');
+                alert('Please provide your Name, Email, and Message.');
                 return;
             }
 
             const waTargetNumber = "62895614003884"; 
-            const baseTextPrompt = `Halo Ran Studio, saya ingin berkonsultasi mengenai pembuatan website.\n\nNama: ${contactName}\nEmail: ${contactEmail}\nPesan: ${contactMessage}\n\nTerima kasih.`;
+            const baseTextPrompt = `Hello Ran Studio, I would like to consult about website development.\n\nName: ${contactName}\nEmail: ${contactEmail}\nMessage: ${contactMessage}\n\nThank you.`;
 
             const processedEncodedUriString = encodeURIComponent(baseTextPrompt);
             const destinationEndpointUrl = `https://wa.me/${waTargetNumber}?text=${processedEncodedUriString}`;
