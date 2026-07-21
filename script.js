@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calcPagesRange.addEventListener('input', recalculateCalculatorEstimate);
         calcDomainCB.addEventListener('change', recalculateCalculatorEstimate);
         
-        // Memastikan update saat halaman di load
+        // Ensure it updates accurately on page load
         recalculateCalculatorEstimate();
     }
 
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (whatsappCheckoutBtn) {
         whatsappCheckoutBtn.addEventListener('click', () => {
             if (!cartState) {
-                alert('Your shopping cart is empty!');
+                alert('Your shopping cart is currently empty!');
                 return;
             }
 
